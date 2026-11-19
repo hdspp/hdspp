@@ -1,9 +1,10 @@
 import React from 'react';
-import {AbsoluteFill, Series, interpolate, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, Sequence, Series, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {colors, sans, serif} from '../common/theme';
 import {FadeUp, Footer, GoldRule, Kicker, Reveal, SceneFade, Sky, quoteStyle} from '../common/ui';
 import {Firmament, Humans, Land, Light, Luminaries, Rest, SeaAndSky} from './DayVisuals';
 import {commentary, days, fathers, jewish, question} from './content';
+import timing from './timing.json';
 
 const T = {
   title: 210,
@@ -16,17 +17,6 @@ const T = {
   question: 330,
   end: 180,
 };
-
-export const TEMA01_DURATION =
-  T.title +
-  T.reading +
-  days.length * T.day +
-  T.section * 3 +
-  jewish.length * T.card +
-  fathers.length * T.father +
-  commentary.length * T.comment +
-  T.question +
-  T.end;
 
 const Center: React.FC<{children: React.ReactNode; style?: React.CSSProperties}> = ({children, style}) => (
   <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', padding: '0 160px', ...style}}>
@@ -196,50 +186,81 @@ const EndScene: React.FC = () => (
   </SceneFade>
 );
 
+type Scene = {id: string; base: number; delay?: number; tail?: number; el: React.ReactNode};
+
+const scenes: Scene[] = [
+  {id: 'title', base: T.title, delay: 40, el: <TitleScene />},
+  {id: 'reading', base: T.reading, delay: 30, el: <ReadingScene />},
+  ...days.map((_, i) => ({id: `day${i + 1}`, base: T.day, delay: 30, el: <DayScene i={i} />})),
+  {id: 'sec2', base: T.section, el: <SectionScene num="2" title="De la tradición judía" />},
+  ...jewish.map((q, i) => ({
+    id: `j${i + 1}`,
+    base: T.card,
+    el: <QuoteCard text={q.text} src={q.src} label="Tradición judía" warmth={0.2} />,
+  })),
+  {id: 'sec3', base: T.section, el: <SectionScene num="3" title="Padres de la Iglesia y Magisterio" />},
+  ...fathers.map((q, i) => ({
+    id: `p${i + 1}`,
+    base: T.father,
+    el: <QuoteCard text={q.text} src={q.src} label="Padres y Magisterio" warmth={0.35} />,
+  })),
+  {id: 'sec4', base: T.section, el: <SectionScene num="4" title="Comentario e interpretación" />},
+  ...commentary.map((c, i) => ({id: `c${i + 1}`, base: T.comment, el: <CommentScene text={c} i={i} />})),
+  {id: 'question', base: T.question, delay: 30, tail: 150, el: <QuestionScene />},
+  {id: 'end', base: T.end, delay: 25, tail: 90, el: <EndScene />},
+];
+
+const FPS = 30;
+const DEFAULT_DELAY = 20;
+const DEFAULT_TAIL = 40;
+
+// Cada escena dura lo que necesite su narración (y nunca menos que su duración base).
+const timeline = (() => {
+  let from = 0;
+  return scenes.map((sc) => {
+    const delay = sc.delay ?? DEFAULT_DELAY;
+    const voice = Math.ceil(((timing as Record<string, number>)[sc.id] ?? 0) * FPS);
+    const duration = Math.max(sc.base, delay + voice + (sc.tail ?? DEFAULT_TAIL));
+    const item = {...sc, delay, voice, duration, from};
+    from += duration;
+    return item;
+  });
+})();
+
+export const TEMA01_DURATION = timeline.reduce((a, s) => a + s.duration, 0);
+
+/** Volumen de la música: baja mientras habla el narrador y se desvanece al final. */
+const musicVolume = (f: number) => {
+  let duck = 0;
+  for (const s of timeline) {
+    const a = s.from + s.delay;
+    const b = a + s.voice;
+    duck = Math.max(
+      duck,
+      interpolate(f, [a - 12, a, b, b + 20], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
+    );
+  }
+  const fade = interpolate(f, [0, 45, TEMA01_DURATION - 120, TEMA01_DURATION], [0, 1, 1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  return (0.55 - 0.33 * duck) * fade;
+};
+
 export const Tema01: React.FC = () => (
   <AbsoluteFill style={{background: colors.night}}>
+    <Audio src={staticFile('tema01/musica.mp3')} volume={musicVolume} />
     <Series>
-      <Series.Sequence durationInFrames={T.title}>
-        <TitleScene />
-      </Series.Sequence>
-      <Series.Sequence durationInFrames={T.reading}>
-        <ReadingScene />
-      </Series.Sequence>
-      {days.map((_, i) => (
-        <Series.Sequence key={`d${i}`} durationInFrames={T.day}>
-          <DayScene i={i} />
+      {timeline.map((s) => (
+        <Series.Sequence key={s.id} durationInFrames={s.duration}>
+          {s.el}
+          {s.voice > 0 && (
+            <Sequence from={s.delay} layout="none">
+              <Audio src={staticFile(`tema01/narracion/${s.id}.mp3`)} />
+            </Sequence>
+          )}
         </Series.Sequence>
       ))}
-      <Series.Sequence durationInFrames={T.section}>
-        <SectionScene num="2" title="De la tradición judía" />
-      </Series.Sequence>
-      {jewish.map((q, i) => (
-        <Series.Sequence key={`j${i}`} durationInFrames={T.card}>
-          <QuoteCard text={q.text} src={q.src} label="Tradición judía" warmth={0.2} />
-        </Series.Sequence>
-      ))}
-      <Series.Sequence durationInFrames={T.section}>
-        <SectionScene num="3" title="Padres de la Iglesia y Magisterio" />
-      </Series.Sequence>
-      {fathers.map((q, i) => (
-        <Series.Sequence key={`p${i}`} durationInFrames={T.father}>
-          <QuoteCard text={q.text} src={q.src} label="Padres y Magisterio" warmth={0.35} />
-        </Series.Sequence>
-      ))}
-      <Series.Sequence durationInFrames={T.section}>
-        <SectionScene num="4" title="Comentario e interpretación" />
-      </Series.Sequence>
-      {commentary.map((c, i) => (
-        <Series.Sequence key={`c${i}`} durationInFrames={T.comment}>
-          <CommentScene text={c} i={i} />
-        </Series.Sequence>
-      ))}
-      <Series.Sequence durationInFrames={T.question}>
-        <QuestionScene />
-      </Series.Sequence>
-      <Series.Sequence durationInFrames={T.end}>
-        <EndScene />
-      </Series.Sequence>
     </Series>
   </AbsoluteFill>
 );
