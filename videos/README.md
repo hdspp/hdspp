@@ -15,6 +15,9 @@ Composición `Tema01` (1920×1080, 30 fps, ~3 min 15 s):
 
 Los textos están en `src/tema01/content.ts`.
 
+Antes de renderizar, instala en el sistema las fuentes de `public/fonts`
+(Cormorant Garamond e Inter; en Linux, conviértelas a TTF y cópialas a `~/.fonts`).
+
 ```bash
 npm install
 npm run studio   # vista previa
