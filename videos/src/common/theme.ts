@@ -1,11 +1,26 @@
-import '@fontsource/cormorant-garamond/latin-400.css';
-import '@fontsource/cormorant-garamond/latin-500.css';
-import '@fontsource/cormorant-garamond/latin-400-italic.css';
-import '@fontsource/inter/latin-400.css';
-import '@fontsource/inter/latin-600.css';
+import {continueRender, delayRender, staticFile} from 'remotion';
 
 export const serif = '"Cormorant Garamond", Georgia, serif';
 export const sans = 'Inter, Helvetica, Arial, sans-serif';
+
+// Fuentes locales (public/fonts), cargadas antes de capturar fotogramas.
+const fonts: [string, string, string, string][] = [
+  ['Cormorant Garamond', 'cormorant-garamond-latin-400-normal.woff2', '400', 'normal'],
+  ['Cormorant Garamond', 'cormorant-garamond-latin-500-normal.woff2', '500', 'normal'],
+  ['Cormorant Garamond', 'cormorant-garamond-latin-400-italic.woff2', '400', 'italic'],
+  ['Inter', 'inter-latin-400-normal.woff2', '400', 'normal'],
+  ['Inter', 'inter-latin-600-normal.woff2', '600', 'normal'],
+];
+const handle = delayRender('Cargando fuentes');
+Promise.all(
+  fonts.map(async ([family, file, weight, style]) => {
+    const face = new FontFace(family, `url(${staticFile(`fonts/${file}`)}) format('woff2')`, {weight, style});
+    await face.load();
+    document.fonts.add(face);
+  }),
+)
+  .catch((e) => console.error('No se pudieron cargar las fuentes', e))
+  .finally(() => continueRender(handle));
 
 export const colors = {
   night: '#070b1a',
@@ -16,12 +31,3 @@ export const colors = {
   ivory: '#f7f1e3',
   muted: 'rgba(247,241,227,0.62)',
 };
-
-// Esperar a que las fuentes estén cargadas antes de capturar cada fotograma.
-import {continueRender, delayRender} from 'remotion';
-const fontHandle = delayRender('Cargando fuentes');
-Promise.all(
-  ['400 40px "Cormorant Garamond"', '500 40px "Cormorant Garamond"', 'italic 400 40px "Cormorant Garamond"', '400 20px Inter', '600 20px Inter'].map(
-    (f) => document.fonts.load(f, 'áéíóúñ«»'),
-  ),
-).then(() => continueRender(fontHandle));
