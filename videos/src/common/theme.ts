@@ -11,16 +11,25 @@ const fonts: [string, string, string, string][] = [
   ['Inter', 'inter-latin-400-normal.woff2', '400', 'normal'],
   ['Inter', 'inter-latin-600-normal.woff2', '600', 'normal'],
 ];
-const handle = delayRender('Cargando fuentes');
-Promise.all(
-  fonts.map(async ([family, file, weight, style]) => {
-    const face = new FontFace(family, `url(${staticFile(`fonts/${file}`)}) format('woff2')`, {weight, style});
-    await face.load();
-    document.fonts.add(face);
-  }),
-)
-  .catch((e) => console.error('No se pudieron cargar las fuentes', e))
-  .finally(() => continueRender(handle));
+const handle = delayRender('Cargando fuentes', {timeoutInMilliseconds: 120000});
+const withTimeout = <T>(p: Promise<T>, ms: number) =>
+  Promise.race([p, new Promise<T>((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
+
+async function loadOne([family, file, weight, style]: [string, string, string, string]) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      const url = `${staticFile(`fonts/${file}`)}?a=${attempt}`;
+      const face = new FontFace(family, `url(${url}) format('woff2')`, {weight, style});
+      await withTimeout(face.load(), 10000);
+      document.fonts.add(face);
+      return;
+    } catch (e) {
+      console.warn(`Reintentando fuente ${file}`, e);
+    }
+  }
+}
+
+Promise.all(fonts.map(loadOne)).finally(() => continueRender(handle));
 
 export const colors = {
   night: '#070b1a',
