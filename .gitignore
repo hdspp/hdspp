@@ -1,1 +1,7 @@
 video/build/
+video/tema01/node_modules/
+video/tema01/.hyperframes/
+video/tema01/musica/*.wav
+__pycache__/
+video/tema01/salida/work-*/
+video/tema01/salida/.*transaction*/

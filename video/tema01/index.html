@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es" data-resolution="portrait">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1080, height=1920" />
+  <title>Tema 1 · Primer domingo de Adviento</title>
+  <!-- Generado por construir.py a partir de plantilla.html y guion.json. No editar a mano. -->
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Cormorant Garamond"; font-weight: 600; src: url(assets/fonts/cormorant-garamond-latin-600-normal.woff2); }
+    @font-face { font-family: "Cormorant Garamond"; font-weight: 600; font-style: italic; src: url(assets/fonts/cormorant-garamond-latin-600-italic.woff2); }
+    @font-face { font-family: "Cormorant Garamond"; font-weight: 700; src: url(assets/fonts/cormorant-garamond-latin-700-normal.woff2); }
+    @font-face { font-family: "EB Garamond"; font-weight: 400; src: url(assets/fonts/eb-garamond-latin-400-normal.woff2); }
+    @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: italic; src: url(assets/fonts/eb-garamond-latin-400-italic.woff2); }
+    @font-face { font-family: "EB Garamond"; font-weight: 500; src: url(assets/fonts/eb-garamond-latin-500-normal.woff2); }
+    @font-face { font-family: "Noto Color Emoji"; src: url(assets/fonts/NotoColorEmoji.ttf); }
+
+    :root {
+      --rojo: #681b11; --rojo-claro: #8f2c1b; --rojo-oscuro: #3e0e07;
+      --oro: #b78934; --oro-claro: #e3bf6e;
+      --crema: #f3e6d3; --papel: #f6efe2; --tinta: #2a2118; --rubrica: #8c2f1e;
+      --display: "Cormorant Garamond", Georgia, serif;
+      --texto: "EB Garamond", Georgia, serif;
+      --emoji: "Noto Color Emoji", sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--rojo-oscuro); }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--rojo-oscuro); }
+    .clip { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+    video.clip { object-fit: cover; }
+    .escena { overflow: hidden; font-family: var(--texto); color: var(--crema); opacity: 0; }
+    .escena > * { position: absolute; }
+
+    /* Zona segura común a Shorts, Reels y TikTok: texto entre x 120–888 e y 288–1248. */
+    /* ---------- elementos comunes ---------- */
+    .sec { z-index: 3; top: 296px; left: 120px; width: 768px; display: flex; align-items: baseline; justify-content: center; gap: 18px; text-align: center; }
+    .sec .num { font-family: var(--display); font-weight: 700; font-size: 54px; line-height: 1; color: var(--oro-claro); }
+    .sec .nom { font-family: var(--texto); font-weight: 500; font-size: 28px; letter-spacing: .16em; text-transform: uppercase; color: var(--oro-claro); }
+    .caps { left: 120px; width: 768px; top: 830px; height: 412px; }
+    .cap { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
+           padding: 26px 30px; border-radius: 30px; background: rgba(30, 8, 4, .62); box-shadow: 0 14px 40px rgba(0,0,0,.25); opacity: 0; text-align: center; }
+    .cap p { font-size: 45px; line-height: 1.24; }
+    .cap small { margin-top: 16px; font-size: 28px; letter-spacing: .03em; color: var(--oro-claro); font-style: italic; }
+
+    .medal { width: 240px; height: 270px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .medal .emo { width: 200px; height: 200px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                  font-family: var(--emoji); font-size: 110px; line-height: 1; background: radial-gradient(circle at 50% 40%, #fffaf0, var(--crema));
+                  border: 7px solid var(--oro); box-shadow: 0 0 0 6px rgba(227,191,110,.25), 0 16px 40px rgba(0,0,0,.35); }
+    .medal .lab { font-size: 30px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--oro-claro); white-space: nowrap; }
+    .medal.solo { left: 384px; top: 430px; }
+    .medal.grande { width: 380px; height: 380px; left: 314px; top: 400px; }
+    .medal.grande .emo { width: 370px; height: 370px; font-size: 210px; border-width: 11px; }
+
+    /* ---------- portada ---------- */
+    .esc-portada { background: radial-gradient(ellipse 80% 60% at 50% 35%, var(--rojo-claro), var(--rojo) 50%, var(--rojo-oscuro)); }
+    .corona { left: 154px; top: 330px; width: 700px; }
+    .corona-svg { width: 700px; height: 367px; overflow: visible; }
+    .titulo { left: 120px; width: 768px; top: 690px; text-align: center; font-family: var(--display); font-weight: 600; font-size: 64px; white-space: nowrap; line-height: 1.02; color: var(--crema); }
+    .lema { left: 120px; width: 768px; top: 775px; text-align: center; font-family: var(--display); font-style: italic; font-weight: 600; font-size: 66px; color: var(--oro-claro); }
+    .esc-portada .caps { top: 920px; height: 322px; }
+
+    /* ---------- lectura ---------- */
+    .cielo, .cielo i { position: absolute; inset: 0; }
+    .cielo i { opacity: 0; }
+    .cielo .c0 { opacity: 1; background: linear-gradient(#141a3a, #33315e 55%, #6a4a6e); }
+    .cielo .c1 { background: linear-gradient(#3b2a5a, #c2577a 45%, #f3a35b 75%); }
+    .cielo .c2 { background: linear-gradient(#05071a, #0d1640 60%, #1d2856); }
+    .cielo .c3 { background: linear-gradient(#1b1d45, #4c4777 55%, #a77c8c); }
+    .cielo .c4 { background: linear-gradient(#6fb0e4, #f6c9a1 60%, #ffd98f); }
+    .estrellas { inset: 0; }
+    .estrellas i { position: absolute; border-radius: 50%; background: #fff6da; box-shadow: 0 0 10px #fff1c0; }
+    .astro { width: 130px; height: 130px; border-radius: 50%; }
+    #luna { left: 690px; top: 560px; background: radial-gradient(circle at 38% 38%, #fffbe8, #f1e2b0); box-shadow: 0 0 60px 20px rgba(255,240,190,.45); opacity: 0; }
+    #sol { left: 200px; top: 900px; width: 180px; height: 180px; background: radial-gradient(circle, #fff6c8, #ffc24a 60%, #ff9b2f); box-shadow: 0 0 120px 50px rgba(255,190,80,.6); opacity: 0; }
+    .casa { left: 154px; top: 420px; width: 700px; height: 493px; }
+    .cita { z-index: 3; left: 120px; width: 768px; top: 372px; text-align: center; display: flex; flex-direction: column; gap: 6px; }
+    .cita b { font-family: var(--display); font-weight: 700; font-size: 42px; color: var(--oro-claro); }
+    .cita i { font-family: var(--texto); font-style: italic; font-size: 30px; line-height: 1.22; color: var(--crema); }
+    .portero { left: 650px; top: 700px; width: 110px; height: 110px; }
+    .portero .emo { width: 110px; height: 110px; font-size: 62px; border-width: 5px; }
+    .gallo { left: 720px; top: 480px; width: 140px; height: 140px; }
+    .gallo .emo { width: 140px; height: 140px; font-size: 82px; border-width: 5px; }
+    .zzz { left: 300px; top: 610px; font-family: var(--display); font-style: italic; font-weight: 700; font-size: 70px; color: #dfe6ff; opacity: 0; letter-spacing: .1em; }
+    .esc-lectura .caps { top: 880px; height: 362px; }
+    .velo { left: 0; right: 0; top: 0; height: 640px; background: linear-gradient(rgba(12,10,30,.62), rgba(12,10,30,.5) 70%, transparent); }
+    .suelo { left: 0; right: 0; top: 880px; bottom: 0; background: linear-gradient(#1d2a1a, #142012 40%, #0c140b); }
+    .sello { left: 450px; top: 1420px; width: 180px; height: 180px; border-radius: 26px; box-shadow: 0 12px 40px rgba(0,0,0,.35); opacity: .92; }
+
+    /* ---------- tradición judía ---------- */
+    .noche { inset: 0; background: radial-gradient(ellipse 90% 70% at 50% 30%, #2a2f6b, #161a45 55%, #0b0d26); }
+    .guardias { left: 120px; width: 768px; top: 410px; display: flex; justify-content: space-between; }
+    .reloj { left: 150px; width: 708px; top: 420px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .cuarto { position: relative; height: 150px; border-radius: 24px; border: 4px solid rgba(227,191,110,.55); display: flex; align-items: center; justify-content: center;
+              background: rgba(227,191,110,.12); opacity: 0; }
+    .cuarto span { font-family: var(--display); font-weight: 600; font-size: 44px; color: var(--crema); }
+
+    /* ---------- padres ---------- */
+    .papel { inset: 0; background: radial-gradient(ellipse 90% 70% at 50% 35%, #fbf6ec, var(--papel) 60%, #eadcc2); }
+    .esc-padres .sec .num, .esc-padres .sec .nom { color: var(--rubrica); }
+    .venidas { left: 120px; width: 768px; top: 400px; height: 280px; }
+    .venidas .medal { position: absolute; top: 0; }
+    #v-belen { left: 0; } #v-hoy { left: 264px; } #v-gloria { left: 528px; }
+    .esc-padres .medal .lab { color: var(--rubrica); }
+    .autor { left: 120px; width: 768px; top: 700px; text-align: center; font-family: var(--display); font-weight: 600; font-size: 58px; color: var(--rubrica); opacity: 0; }
+    .esc-padres .cap { background: rgba(255,255,255,.66); border: 2px solid #e2d2b4; box-shadow: 0 12px 36px rgba(90,60,20,.12); }
+    .esc-padres .cap p { color: var(--tinta); }
+    .esc-padres .cap small { color: var(--rubrica); }
+
+    /* ---------- comentario ---------- */
+    .calido { inset: 0; background: radial-gradient(ellipse 70% 45% at 50% 30%, #a8572a, #5a2412 55%, #2a0d06); }
+    .esc-comentario .medal { opacity: 0; }
+
+    /* ---------- pregunta ---------- */
+    .rojo { inset: 0; background: radial-gradient(ellipse 85% 60% at 50% 40%, var(--rojo-claro), var(--rojo) 55%, var(--rojo-oscuro)); }
+    .pq { left: 120px; width: 768px; top: 430px; text-align: center; font-family: var(--display); font-weight: 600; font-size: 74px; line-height: 1.12; color: var(--crema); opacity: 0; }
+    .pq .comilla { color: var(--oro-claro); }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="153.919" data-width="1080" data-height="1920">
+    <video id="apertura" class="clip" src="assets/apertura_9x16.mp4" data-start="0" data-duration="6.0" data-has-audio="true" data-track-index="0"></video>
+
+    <section id="esc-portada" class="escena clip esc-portada" data-start="6.0" data-duration="14.236" data-track-index="1">
+      
+  <div class="corona">
+    <svg viewBox="0 0 800 420" class="corona-svg">
+      <defs>
+        <radialGradient id="glowv" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffe6a8" stop-opacity=".9"/><stop offset="1" stop-color="#ffcf70" stop-opacity="0"/></radialGradient>
+        <linearGradient id="morado" x1="0" x2="1"><stop offset="0" stop-color="#4b2a6b"/><stop offset=".5" stop-color="#6d3f96"/><stop offset="1" stop-color="#47265f"/></linearGradient>
+        <linearGradient id="rosa" x1="0" x2="1"><stop offset="0" stop-color="#b9647f"/><stop offset=".5" stop-color="#e08aa5"/><stop offset="1" stop-color="#ad5873"/></linearGradient>
+      </defs>
+      <ellipse cx="400" cy="330" rx="330" ry="78" fill="#2f5a2c"/>
+      <ellipse cx="400" cy="322" rx="300" ry="62" fill="#3f7a39"/>
+      <ellipse cx="400" cy="330" rx="210" ry="40" fill="#5b1a10"/>
+      <circle cx="700.0" cy="326.0" r="14" fill="#2d6a2a"/><circle cx="689.7777003518943" cy="342.5644567323574" r="17" fill="#4c8f43"/><circle cx="659.8074374748817" cy="358.0000678632066" r="20" fill="#356f30"/><circle cx="612.1316447533709" cy="371.2549171110063" r="14" fill="#2d6a2a"/><circle cx="549.9993637817637" cy="381.42570420374676" r="17" fill="#4c8f43"/><circle cx="477.64482651947384" cy="387.8193035859674" r="20" fill="#356f30"/><circle cx="399.99889803846906" cy="389.9999999995682" r="14" fill="#2d6a2a"/><circle cx="322.35304465467067" cy="387.8191818966734" r="17" fill="#4c8f43"/><circle cx="249.9987275662259" cy="381.4254691181216" r="20" fill="#356f30"/><circle cx="187.86679684054897" cy="371.25458464982137" r="14" fill="#2d6a2a"/><circle cx="140.19146056826122" cy="357.9996606832475" r="17" fill="#4c8f43"/><circle cx="110.22172923735963" cy="342.5640025823946" r="20" fill="#356f30"/><circle cx="100.00000000809547" cy="325.9995298297468" r="14" fill="#2d6a2a"/><circle cx="110.22287007449091" cy="309.4350891185737" r="17" fill="#4c8f43"/><circle cx="140.1936644959971" cy="293.9995249585614" r="20" fill="#356f30"/><circle cx="187.8699136641579" cy="280.74475043025114" r="14" fill="#2d6a2a"/><circle cx="250.00254487834212" cy="270.5740607136194" r="17" fill="#4c8f43"/><circle cx="322.3573023105721" cy="264.18057472807493" r="20" fill="#356f30"/><circle cx="400.00330588459286" cy="262.0000000038858" r="14" fill="#2d6a2a"/><circle cx="477.64908416699427" cy="264.180939795957" r="17" fill="#4c8f43"/><circle cx="550.003181077689" cy="270.57476597049487" r="20" fill="#356f30"/><circle cx="612.1347615540824" cy="280.745747813806" r="14" fill="#2d6a2a"/><circle cx="659.8096413745741" cy="294.00074649843856" r="17" fill="#4c8f43"/><circle cx="689.7788411577471" cy="309.4364515684622" r="20" fill="#356f30"/>
+      <circle cx="680.9236031708799" cy="355.7016105923709" r="8" fill="#b8332a"/><circle cx="301.3966821066315" cy="392.45580578736934" r="8" fill="#b8332a"/><circle cx="98.8186701777962" cy="319.58878418654564" r="8" fill="#b8332a"/><circle cx="365.79347928480826" cy="264.41639376019134" r="8" fill="#b8332a"/><circle cx="654.5873993759437" cy="293.6547541885559" r="8" fill="#b8332a"/>
+      <g id="velas">
+        <rect x="150" y="150" width="64" height="190" rx="8" fill="url(#morado)"/>
+        <rect x="290" y="120" width="64" height="210" rx="8" fill="url(#morado)"/>
+        <rect x="446" y="120" width="64" height="210" rx="8" fill="url(#rosa)"/>
+        <rect x="586" y="150" width="64" height="190" rx="8" fill="url(#morado)"/>
+        <g stroke="#2a2118" stroke-width="4"><line x1="182" y1="150" x2="182" y2="134"/><line x1="322" y1="120" x2="322" y2="104"/><line x1="478" y1="120" x2="478" y2="104"/><line x1="618" y1="150" x2="618" y2="134"/></g>
+      </g>
+      <g id="llama1" transform="translate(182 128)">
+        <circle r="70" fill="url(#glowv)"/>
+        <path d="M0,-52 C 18,-28 20,-8 0,6 C -20,-8 -18,-28 0,-52 Z" fill="#ffb933"/>
+        <path d="M0,-34 C 9,-20 10,-8 0,0 C -10,-8 -9,-20 0,-34 Z" fill="#fff3c4"/>
+      </g>
+    </svg>
+  </div>
+  <h1 class="titulo">Primer domingo de Adviento</h1>
+  <div class="lema">¡Velad!</div>
+      
+      <img class="sello" src="assets/logo.png" alt="">
+      <div class="caps"><div class="cap" id="cap-p1"><p>¡Hola, pequeños! Hoy es el primer domingo de Adviento.</p></div><div class="cap" id="cap-p2"><p>Encendemos la primera vela de la corona: empezamos a esperar a Jesús, que viene.</p></div><div class="cap" id="cap-p3"><p>Escuchemos el Evangelio de san Marcos.</p></div></div>
+    </section>
+
+    <section id="esc-lectura" class="escena clip esc-lectura" data-start="20.236" data-duration="36.016" data-track-index="1">
+      
+  <div class="cielo" id="cielo"></div>
+  <div class="cita"><b>Marcos 13,33-37</b><i>Velad, pues no sabéis cuándo vendrá el dueño de la casa</i></div>
+  <div class="astro" id="luna"></div>
+  <div class="astro" id="sol"></div>
+  <div class="estrellas" id="estrellas"><i style="left:40px;top:250px;width:3px;height:3px"></i><i style="left:962px;top:645px;width:5px;height:5px"></i><i style="left:97px;top:334px;width:7px;height:7px"></i><i style="left:598px;top:585px;width:3px;height:3px"></i><i style="left:414px;top:438px;width:5px;height:5px"></i><i style="left:493px;top:451px;width:7px;height:7px"></i><i style="left:666px;top:289px;width:3px;height:3px"></i><i style="left:206px;top:531px;width:5px;height:5px"></i><i style="left:711px;top:516px;width:7px;height:7px"></i><i style="left:500px;top:295px;width:3px;height:3px"></i><i style="left:68px;top:653px;width:5px;height:5px"></i><i style="left:219px;top:382px;width:7px;height:7px"></i><i style="left:861px;top:536px;width:3px;height:3px"></i><i style="left:45px;top:666px;width:5px;height:5px"></i><i style="left:224px;top:783px;width:7px;height:7px"></i><i style="left:482px;top:735px;width:3px;height:3px"></i><i style="left:967px;top:631px;width:5px;height:5px"></i><i style="left:474px;top:606px;width:7px;height:7px"></i><i style="left:684px;top:584px;width:3px;height:3px"></i><i style="left:363px;top:676px;width:5px;height:5px"></i><i style="left:800px;top:562px;width:7px;height:7px"></i><i style="left:596px;top:461px;width:3px;height:3px"></i><i style="left:701px;top:615px;width:5px;height:5px"></i><i style="left:621px;top:266px;width:7px;height:7px"></i><i style="left:904px;top:661px;width:3px;height:3px"></i><i style="left:710px;top:386px;width:5px;height:5px"></i><i style="left:545px;top:271px;width:7px;height:7px"></i><i style="left:1040px;top:526px;width:3px;height:3px"></i><i style="left:878px;top:730px;width:5px;height:5px"></i><i style="left:620px;top:406px;width:7px;height:7px"></i><i style="left:1025px;top:619px;width:3px;height:3px"></i><i style="left:763px;top:766px;width:5px;height:5px"></i><i style="left:326px;top:727px;width:7px;height:7px"></i><i style="left:458px;top:713px;width:3px;height:3px"></i><i style="left:241px;top:709px;width:5px;height:5px"></i><i style="left:616px;top:362px;width:7px;height:7px"></i><i style="left:1022px;top:454px;width:3px;height:3px"></i><i style="left:961px;top:737px;width:5px;height:5px"></i><i style="left:570px;top:722px;width:7px;height:7px"></i><i style="left:272px;top:434px;width:3px;height:3px"></i></div>
+  <div class="velo"></div>
+  <div class="suelo"></div>
+  <svg class="casa" viewBox="0 0 1080 760">
+    <path d="M0,620 C 260,560 820,560 1080,620 L1080,760 L0,760 Z" fill="#1d2a1a"/>
+    <g transform="translate(300 250)">
+      <polygon points="-30,170 240,10 510,170" fill="#4a2a1c"/>
+      <rect x="0" y="160" width="480" height="300" fill="#7a4a2e"/>
+      <rect x="40" y="220" width="110" height="100" rx="6" fill="#ffd27a" id="ventana"/>
+      <line x1="95" y1="220" x2="95" y2="320" stroke="#7a4a2e" stroke-width="8"/><line x1="40" y1="270" x2="150" y2="270" stroke="#7a4a2e" stroke-width="8"/>
+      <path d="M300,460 L300,290 Q355,230 410,290 L410,460 Z" fill="#3a2015"/>
+      <path d="M308,460 L308,296 Q355,244 402,296 L402,460 Z" fill="#ffcf75" id="puerta" opacity=".9"/>
+    </g>
+  </svg>
+  <div class="medal portero" id="m-portero"><span class="emo">🏮</span></div>
+  <div class="medal gallo" id="m-gallo"><span class="emo">🐓</span></div>
+  <div class="zzz" id="zzz">Z z z</div>
+      <header class="sec"><span class="num">I</span><span class="nom">Lectura bíblica</span></header>
+      <img class="sello" src="assets/logo.png" alt="">
+      <div class="caps"><div class="cap" id="cap-l1"><p>En aquel tiempo, dijo Jesús a sus discípulos:</p></div><div class="cap" id="cap-l2"><p>«Mirad, vigilad: pues no sabéis cuándo es el momento.</p></div><div class="cap" id="cap-l3"><p>Es igual que un hombre que se fue de viaje, y dejó su casa y dio a cada uno de sus criados su tarea, encargando al portero que velara.</p></div><div class="cap" id="cap-l4"><p>Velad entonces, pues no sabéis cuándo vendrá el dueño de la casa, si al atardecer, o a medianoche, o al canto del gallo, o al amanecer;</p></div><div class="cap" id="cap-l5"><p>no sea que venga inesperadamente y os encuentre dormidos.</p></div><div class="cap" id="cap-l6"><p>Lo que os digo a vosotros lo digo a todos: ¡Velad!».</p></div></div>
+    </section>
+
+    <section id="esc-judia" class="escena clip esc-judia" data-start="56.252" data-duration="30.424" data-track-index="1">
+      
+  <div class="noche"></div>
+  <div class="guardias">
+    <div class="medal " id="m-burro"><span class="emo">🫏</span><span class="lab">1.ª guardia</span></div>
+    <div class="medal " id="m-perro"><span class="emo">🐕</span><span class="lab">2.ª guardia</span></div>
+    <div class="medal " id="m-bebe"><span class="emo">👶</span><span class="lab">3.ª guardia</span></div>
+  </div>
+  <div class="reloj" id="reloj">
+    <div class="cuarto" id="q0"><span>Atardecer</span></div><div class="cuarto" id="q1"><span>Medianoche</span></div><div class="cuarto" id="q2"><span>Canto del gallo</span></div><div class="cuarto" id="q3"><span>Amanecer</span></div>
+  </div>
+  <div class="medal solo" id="m-rollo"><span class="emo">📜</span><span class="lab">Maimónides</span></div>
+      <header class="sec"><span class="num">II</span><span class="nom">De la tradición judía</span></header>
+      <img class="sello" src="assets/logo.png" alt="">
+      <div class="caps"><div class="cap" id="cap-j1"><p>Los sabios de Israel dividían la noche en guardias, como los centinelas que vigilan la ciudad.</p><small>Mishná, Berajot 1,1</small></div><div class="cap" id="cap-j2"><p>Y explicaban cómo saber que cambia la guardia: en la primera rebuzna el burro; en la segunda ladran los perros; en la tercera el niño mama del pecho de su madre.</p><small>Talmud de Babilonia, Berajot 3a</small></div><div class="cap" id="cap-j3"><p>Jesús cuenta la noche en cuatro partes. ¡Toda la noche hay que estar despiertos!</p></div><div class="cap" id="cap-j4"><p>Y un gran maestro judío, Maimónides, enseñó a esperar al Mesías cada día, aunque tarde en llegar.</p><small>Maimónides, Trece principios de la fe, 12.º (cf. Habacuc 2,3)</small></div></div>
+    </section>
+
+    <section id="esc-padres" class="escena clip esc-padres" data-start="86.676" data-duration="21.425" data-track-index="1">
+      
+  <div class="papel"></div>
+  <div class="venidas">
+    <div class="medal " id="v-belen"><span class="emo">⭐</span><span class="lab">Belén</span></div>
+    <div class="medal " id="v-hoy"><span class="emo">❤️</span><span class="lab">Hoy</span></div>
+    <div class="medal " id="v-gloria"><span class="emo">👑</span><span class="lab">En la gloria</span></div>
+  </div>
+  <div class="autor" id="a-cirilo"><i>San Cirilo de Jerusalén</i></div>
+  <div class="autor" id="a-bernardo"><i>San Bernardo</i></div>
+      <header class="sec"><span class="num">III</span><span class="nom">Padres de la Iglesia y Magisterio</span></header>
+      <img class="sello" src="assets/logo.png" alt="">
+      <div class="caps"><div class="cap" id="cap-f1"><p>San Cirilo de Jerusalén dice que Jesús viene dos veces.</p><small>Catequesis 15,1</small></div><div class="cap" id="cap-f2"><p>La primera vez vino escondido y pobre, en el pesebre de Belén. La segunda vendrá con gloria, al final de los tiempos.</p></div><div class="cap" id="cap-f3"><p>San Bernardo añade una venida en medio, escondida: Jesús viene hoy a nuestro corazón cuando guardamos su Palabra.</p><small>Sermón 5 sobre el Adviento</small></div></div>
+    </section>
+
+    <section id="esc-comentario" class="escena clip esc-comentario" data-start="108.101" data-duration="30.227" data-track-index="1">
+      
+  <div class="calido"></div>
+  <div class="medal solo grande" id="k-c1"><span class="emo">🏮</span></div>
+  <div class="medal solo grande" id="k-c2"><span class="emo">🚪</span></div>
+  <div class="medal solo grande" id="k-c3"><span class="emo">😴</span></div>
+  <div class="medal solo grande" id="k-c4"><span class="emo">⛪</span></div>
+  <div class="medal solo grande" id="k-c5"><span class="emo">🤝</span></div>
+      <header class="sec"><span class="num">IV</span><span class="nom">Comentario e interpretación</span></header>
+      <img class="sello" src="assets/logo.png" alt="">
+      <div class="caps"><div class="cap" id="cap-c1"><p>Velar no es tener miedo. Es estar despiertos porque esperamos a Alguien que nos quiere.</p></div><div class="cap" id="cap-c2"><p>El portero no se duerme: tiene la lámpara encendida y el oído atento a la puerta.</p></div><div class="cap" id="cap-c3"><p>Dormirse es vivir como si Jesús no fuera a venir: llenarse de cosas y olvidarse de Él.</p></div><div class="cap" id="cap-c4"><p>Por eso, el domingo llegamos a misa con tiempo y en silencio, como el portero que espera junto a la puerta.</p></div><div class="cap" id="cap-c5"><p>Y Jesús llama también en el hermano que nos necesita.</p></div></div>
+    </section>
+
+    <section id="esc-pregunta" class="escena clip esc-pregunta" data-start="138.328" data-duration="9.591" data-track-index="1">
+      
+  <div class="rojo"></div>
+  <div class="pq" id="pq"><span class="comilla">¿</span>A Jesús le dices «te espero», pero cuando tu hermano te necesita, te haces el dormido<span class="comilla">?</span></div>
+      <header class="sec"><span class="nom">Para conversar en casa</span></header>
+      <img class="sello" src="assets/logo.png" alt="">
+      
+    </section>
+    <video id="cierre" class="clip" src="assets/cierre_9x16.mp4" data-start="147.919" data-duration="6" data-has-audio="true" data-track-index="0"></video>
+    <audio id="musica" src="musica/fondo.wav" data-start="5.8" data-duration="142.42" data-volume="0.5" data-fade-in="1.5" data-fade-out="2" data-track-index="2"></audio>
+    <audio id="voz-p1" src="voz/p1.wav" data-start="7.1" data-duration="3.285" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-p2" src="voz/p2.wav" data-start="10.935" data-duration="5.184" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-p3" src="voz/p3.wav" data-start="16.669" data-duration="2.667" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-l1" src="voz/l1.wav" data-start="21.936" data-duration="3.115" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-l2" src="voz/l2.wav" data-start="25.601" data-duration="3.392" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-l3" src="voz/l3.wav" data-start="29.543" data-duration="8.213" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-l4" src="voz/l4.wav" data-start="38.306" data-duration="8.384" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-l5" src="voz/l5.wav" data-start="47.24" data-duration="3.819" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-l6" src="voz/l6.wav" data-start="51.609" data-duration="3.243" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-j1" src="voz/j1.wav" data-start="57.352" data-duration="5.675" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-j2" src="voz/j2.wav" data-start="63.577" data-duration="9.941" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-j3" src="voz/j3.wav" data-start="74.068" data-duration="4.843" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-j4" src="voz/j4.wav" data-start="79.461" data-duration="6.315" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-f1" src="voz/f1.wav" data-start="87.776" data-duration="3.669" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-f2" src="voz/f2.wav" data-start="91.995" data-duration="7.381" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-f3" src="voz/f3.wav" data-start="99.926" data-duration="7.275" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-c1" src="voz/c1.wav" data-start="109.201" data-duration="5.312" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-c2" src="voz/c2.wav" data-start="115.063" data-duration="5.035" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-c3" src="voz/c3.wav" data-start="120.648" data-duration="5.589" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-c4" src="voz/c4.wav" data-start="126.787" data-duration="6.571" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-c5" src="voz/c5.wav" data-start="133.908" data-duration="3.52" data-volume="1" data-track-index="3"></audio>
+    <audio id="voz-q1" src="voz/q1.wav" data-start="139.428" data-duration="5.291" data-volume="1" data-track-index="3"></audio>
+  </div>
+  <script>
+    const EV = {"total": 153.919, "intro": 6.0, "contEnd": 147.919, "escenas": [{"id": "portada", "t": 6.0, "d": 14.236}, {"id": "lectura", "t": 20.236, "d": 36.016}, {"id": "judia", "t": 56.252, "d": 30.424}, {"id": "padres", "t": 86.676, "d": 21.425}, {"id": "comentario", "t": 108.101, "d": 30.227}, {"id": "pregunta", "t": 138.328, "d": 9.591}], "frases": [{"id": "p1", "t": 7.1, "d": 3.285, "esc": "portada"}, {"id": "p2", "t": 10.935, "d": 5.184, "esc": "portada"}, {"id": "p3", "t": 16.669, "d": 2.667, "esc": "portada"}, {"id": "l1", "t": 21.936, "d": 3.115, "esc": "lectura"}, {"id": "l2", "t": 25.601, "d": 3.392, "esc": "lectura"}, {"id": "l3", "t": 29.543, "d": 8.213, "esc": "lectura"}, {"id": "l4", "t": 38.306, "d": 8.384, "esc": "lectura"}, {"id": "l5", "t": 47.24, "d": 3.819, "esc": "lectura"}, {"id": "l6", "t": 51.609, "d": 3.243, "esc": "lectura"}, {"id": "j1", "t": 57.352, "d": 5.675, "esc": "judia"}, {"id": "j2", "t": 63.577, "d": 9.941, "esc": "judia"}, {"id": "j3", "t": 74.068, "d": 4.843, "esc": "judia"}, {"id": "j4", "t": 79.461, "d": 6.315, "esc": "judia"}, {"id": "f1", "t": 87.776, "d": 3.669, "esc": "padres"}, {"id": "f2", "t": 91.995, "d": 7.381, "esc": "padres"}, {"id": "f3", "t": 99.926, "d": 7.275, "esc": "padres"}, {"id": "c1", "t": 109.201, "d": 5.312, "esc": "comentario"}, {"id": "c2", "t": 115.063, "d": 5.035, "esc": "comentario"}, {"id": "c3", "t": 120.648, "d": 5.589, "esc": "comentario"}, {"id": "c4", "t": 126.787, "d": 6.571, "esc": "comentario"}, {"id": "c5", "t": 133.908, "d": 3.52, "esc": "comentario"}], "vela": 11.135, "cielo": [42.777, 43.709, 45.386, 46.131], "dormidos": 50.456, "velad": 54.291, "portero": 36.591, "guardias": [66.85, 68.825, 70.863], "reloj": 74.068, "rollo": 79.461, "cirilo": 87.776, "belen": 92.184, "gloria": 96.159, "bernardo": 99.926, "hoy": 101.857, "coment": [109.201, 115.063, 120.648, 126.787, 133.908], "pregunta": 139.428};
+    const tl = gsap.timeline({ paused: true });
+    const $ = s => document.querySelector(s);
+
+    // Cielo de la lectura: capas que se funden
+    (function () {
+      const c = document.getElementById("cielo");
+      for (let k = 0; k < 5; k++) { const i = document.createElement("i"); i.className = "c" + k; c.appendChild(i); }
+    })();
+
+    // ---- escenas: aparecer y desaparecer ----
+    for (const e of EV.escenas) {
+      const el = "#esc-" + e.id;
+      tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, e.t);
+      tl.to(el, { opacity: 0, duration: 0.5, ease: "power1.in" }, e.t + e.d - 0.5);
+      if ($(el + " .sec")) tl.from(el + " .sec", { y: -40, opacity: 0, duration: 0.7, ease: "power3.out" }, e.t + 0.25);
+      // movimiento lento y continuo del fondo/ilustración (evita planos congelados)
+      tl.fromTo(el + " > :first-child", { scale: 1 }, { scale: 1.07, y: -24, duration: e.d, ease: "none" }, e.t);
+      if ($(el + " .caps")) tl.fromTo(el + " .caps", { y: 6 }, { y: -6, duration: 2.4, ease: "sine.inOut", yoyo: true, repeat: Math.floor(e.d / 2.4) }, e.t);
+    }
+
+    // ---- subtítulos: cada frase visible mientras se dice ----
+    EV.frases.forEach((f, i) => {
+      const sig = EV.frases[i + 1];
+      const esc = EV.escenas.find(e => e.id === f.esc);
+      const fin = sig && sig.esc === f.esc ? sig.t - 0.28 : esc.t + esc.d - 0.6;
+      const el = "#cap-" + f.id;
+      tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, f.t - 0.2);
+      tl.to(el, { opacity: 0, y: -20, duration: 0.3, ease: "power1.in" }, fin);
+    });
+
+    // ---- portada ----
+    {
+      const t = EV.escenas[0].t;
+      tl.from(".corona", { opacity: 0, scale: 0.85, y: 40, duration: 1.0, ease: "back.out(1.4)" }, t + 0.1);
+      tl.from(".titulo", { opacity: 0, y: 40, duration: 0.8, ease: "power3.out" }, t + 0.5);
+      tl.from(".lema", { opacity: 0, scale: 0.7, duration: 0.8, ease: "back.out(2)" }, t + 0.95);
+      tl.set("#llama1", { opacity: 0 }, 0);
+      tl.fromTo("#llama1", { opacity: 0, scale: 0.2, transformOrigin: "50% 100%" }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(2.2)" }, EV.vela);
+      tl.to("#llama1", { scaleY: 1.08, scaleX: 0.95, transformOrigin: "50% 100%", duration: 0.22, ease: "sine.inOut", yoyo: true, repeat: 40 }, EV.vela + 0.7);
+    }
+
+    // ---- lectura: la noche del portero ----
+    {
+      const [atar, media, gallo, amanecer] = EV.cielo;
+      const capa = k => "#cielo .c" + k;
+      tl.to(capa(1), { opacity: 1, duration: 0.9 }, atar - 0.2);
+      tl.to(capa(2), { opacity: 1, duration: 0.9 }, media - 0.2);
+      tl.to("#luna", { opacity: 1, y: -60, duration: 1.2, ease: "power2.out" }, media - 0.2);
+      tl.to("#estrellas", { opacity: 1, duration: 0.8 }, media - 0.1);
+      tl.to(capa(3), { opacity: 1, duration: 0.8 }, gallo - 0.2);
+      tl.fromTo("#m-gallo", { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2.4)" }, gallo - 0.1);
+      tl.to(capa(4), { opacity: 1, duration: 1.0 }, amanecer - 0.2);
+      tl.to("#luna", { opacity: 0, duration: 0.8 }, amanecer);
+      tl.to("#estrellas", { opacity: 0, duration: 0.8 }, amanecer);
+      tl.fromTo("#sol", { opacity: 0, y: 160 }, { opacity: 1, y: -380, duration: 2.6, ease: "power2.out" }, amanecer - 0.2);
+      tl.set("#estrellas", { opacity: 0.55 }, 0);
+      tl.fromTo("#m-portero", { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2.4)" }, EV.portero);
+      tl.fromTo("#zzz", { opacity: 0, y: 20 }, { opacity: 1, y: -20, duration: 0.9, ease: "power1.out" }, EV.dormidos);
+      tl.to("#zzz", { opacity: 0, duration: 0.4 }, EV.velad - 0.2);
+      tl.to("#m-portero", { scale: 1.35, duration: 0.3, yoyo: true, repeat: 3, ease: "sine.inOut" }, EV.velad);
+      tl.from(".cita", { opacity: 0, y: 30, duration: 0.8, ease: "power2.out" }, EV.escenas[1].t + 0.4);
+    }
+
+    // ---- tradición judía ----
+    {
+      ["#m-burro", "#m-perro", "#m-bebe"].forEach((m, k) => {
+        tl.fromTo(m, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2.2)" }, EV.guardias[k] - 0.1);
+      });
+      const nombres = ["#q0", "#q1", "#q2", "#q3"];
+      const j3 = EV.frases.find(f => f.id === "j3");
+      tl.to(".guardias", { opacity: 0, scale: 0.9, duration: 0.5 }, EV.reloj - 0.4);
+      nombres.forEach((q, k) => {
+        tl.fromTo(q, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2)" }, EV.reloj + k * (j3.d * 0.5 / 4));
+      });
+      tl.to([".guardias", ".reloj"], { opacity: 0, duration: 0.5 }, EV.rollo - 0.4);
+      tl.fromTo("#m-rollo", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(2)" }, EV.rollo);
+      tl.set("#m-rollo", { opacity: 0 }, 0);
+    }
+
+    // ---- padres ----
+    {
+      tl.set(["#v-belen", "#v-hoy", "#v-gloria"], { opacity: 0 }, 0);
+      tl.fromTo(["#v-belen", "#v-gloria"], { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)", stagger: 0.2 }, EV.cirilo);
+      tl.fromTo("#a-cirilo", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, EV.cirilo + 0.2);
+      tl.to("#v-belen", { scale: 1.12, duration: 0.35, yoyo: true, repeat: 1 }, EV.belen);
+      tl.to("#v-gloria", { scale: 1.12, duration: 0.35, yoyo: true, repeat: 1 }, EV.gloria);
+      tl.to("#a-cirilo", { opacity: 0, duration: 0.4 }, EV.bernardo - 0.3);
+      tl.fromTo("#a-bernardo", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, EV.bernardo);
+      tl.fromTo("#v-hoy", { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1.1, duration: 0.7, ease: "back.out(2.4)" }, EV.hoy - 0.1);
+      tl.to("#v-hoy", { scale: 1, duration: 0.4 }, EV.hoy + 0.7);
+    }
+
+    // ---- comentario: un medallón por idea ----
+    {
+      const ids = ["#k-c1", "#k-c2", "#k-c3", "#k-c4", "#k-c5"];
+      ids.forEach((m, k) => {
+        tl.fromTo(m, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.8)" }, EV.coment[k] - 0.15);
+        if (k < ids.length - 1) tl.to(m, { opacity: 0, scale: 0.9, duration: 0.35 }, EV.coment[k + 1] - 0.35);
+      });
+    }
+
+    // ---- pregunta final ----
+    tl.fromTo("#pq", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, EV.pregunta - 0.3);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["main"] = tl;
+    tl.seek(0);
+  </script>
+</body>
+</html>

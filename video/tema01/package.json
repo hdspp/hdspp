@@ -1,0 +1,14 @@
+{
+  "name": "tema01-adviento",
+  "scripts": {
+    "guion": "python3 gen_voz.py && python3 construir.py",
+    "check": "npx hyperframes check",
+    "render": "npx hyperframes render -q delivery -o salida/tema01_adviento1_9x16.mp4"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "hyperframes": "^0.9.98"
+  },
+  "private": true,
+  "type": "module"
+}

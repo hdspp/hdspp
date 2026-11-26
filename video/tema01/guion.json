@@ -1,0 +1,68 @@
+{
+  "titulo": "Primer domingo de Adviento",
+  "lema": "¡Velad!",
+  "voz": { "id": "ef_dora", "velocidad": 0.85 },
+  "escenas": [
+    {
+      "id": "portada",
+      "seccion": null,
+      "frases": [
+        { "id": "p1", "voz": "¡Hola, pequeños! Hoy es el primer domingo de Adviento." },
+        { "id": "p2", "voz": "Encendemos la primera vela de la corona: empezamos a esperar a Jesús, que viene." },
+        { "id": "p3", "voz": "Escuchemos el Evangelio de san Marcos." }
+      ]
+    },
+    {
+      "id": "lectura",
+      "seccion": { "num": "I", "nombre": "Lectura bíblica" },
+      "cita": "Marcos 13,33-37",
+      "subtitulo": "Velad, pues no sabéis cuándo vendrá el dueño de la casa",
+      "nota": "PENDIENTE DE VERIFICAR contra el Leccionario del proyecto (no accesible desde la sesión en la nube).",
+      "frases": [
+        { "id": "l1", "voz": "En aquel tiempo, dijo Jesús a sus discípulos:" },
+        { "id": "l2", "voz": "«Mirad, vigilad: pues no sabéis cuándo es el momento." },
+        { "id": "l3", "voz": "Es igual que un hombre que se fue de viaje, y dejó su casa y dio a cada uno de sus criados su tarea, encargando al portero que velara." },
+        { "id": "l4", "voz": "Velad entonces, pues no sabéis cuándo vendrá el dueño de la casa, si al atardecer, o a medianoche, o al canto del gallo, o al amanecer;" },
+        { "id": "l5", "voz": "no sea que venga inesperadamente y os encuentre dormidos." },
+        { "id": "l6", "voz": "Lo que os digo a vosotros lo digo a todos: ¡Velad!»." }
+      ]
+    },
+    {
+      "id": "judia",
+      "seccion": { "num": "II", "nombre": "De la tradición judía" },
+      "frases": [
+        { "id": "j1", "voz": "Los sabios de Israel dividían la noche en guardias, como los centinelas que vigilan la ciudad.", "fuente": "Mishná, Berajot 1,1" },
+        { "id": "j2", "voz": "Y explicaban cómo saber que cambia la guardia: en la primera rebuzna el burro; en la segunda ladran los perros; en la tercera el niño mama del pecho de su madre.", "fuente": "Talmud de Babilonia, Berajot 3a" },
+        { "id": "j3", "voz": "Jesús cuenta la noche en cuatro partes. ¡Toda la noche hay que estar despiertos!" },
+        { "id": "j4", "voz": "Y un gran maestro judío, Maimónides, enseñó a esperar al Mesías cada día, aunque tarde en llegar.", "fuente": "Maimónides, Trece principios de la fe, 12.º (cf. Habacuc 2,3)" }
+      ]
+    },
+    {
+      "id": "padres",
+      "seccion": { "num": "III", "nombre": "Padres de la Iglesia y Magisterio" },
+      "frases": [
+        { "id": "f1", "voz": "San Cirilo de Jerusalén dice que Jesús viene dos veces.", "autor": "San Cirilo de Jerusalén", "fuente": "Catequesis 15,1" },
+        { "id": "f2", "voz": "La primera vez vino escondido y pobre, en el pesebre de Belén. La segunda vendrá con gloria, al final de los tiempos." },
+        { "id": "f3", "voz": "San Bernardo añade una venida en medio, escondida: Jesús viene hoy a nuestro corazón cuando guardamos su Palabra.", "autor": "San Bernardo", "fuente": "Sermón 5 sobre el Adviento" }
+      ]
+    },
+    {
+      "id": "comentario",
+      "seccion": { "num": "IV", "nombre": "Comentario e interpretación" },
+      "frases": [
+        { "id": "c1", "voz": "Velar no es tener miedo. Es estar despiertos porque esperamos a Alguien que nos quiere." },
+        { "id": "c2", "voz": "El portero no se duerme: tiene la lámpara encendida y el oído atento a la puerta." },
+        { "id": "c3", "voz": "Dormirse es vivir como si Jesús no fuera a venir: llenarse de cosas y olvidarse de Él." },
+        { "id": "c4", "voz": "Por eso, el domingo llegamos a misa con tiempo y en silencio, como el portero que espera junto a la puerta." },
+        { "id": "c5", "voz": "Y Jesús llama también en el hermano que nos necesita." }
+      ]
+    },
+    {
+      "id": "pregunta",
+      "seccion": { "num": "", "nombre": "Para conversar en casa" },
+      "frases": [
+        { "id": "q1", "voz": "¿A Jesús le dices «te espero», pero cuando tu hermano te necesita, te haces el dormido?" }
+      ]
+    }
+  ]
+}
