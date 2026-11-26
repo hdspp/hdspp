@@ -1,12 +1,13 @@
 """Música de fondo original: pads ambientales en Re mayor con campanas suaves.
 
-Uso: python3 scripts/musica.py <segundos> <salida.mp3>
+Uso: python3 scripts/musica.py <segundos> <salida.mp3> [creacion|adviento]
 """
 import subprocess, sys, tempfile, wave
 import numpy as np
 
 SR = 44100
 dur = float(sys.argv[1]); out = sys.argv[2]
+preset = sys.argv[3] if len(sys.argv) > 3 else 'creacion'
 n = int(SR * dur)
 t = np.arange(n) / SR
 rng = np.random.default_rng(7)
@@ -19,7 +20,13 @@ chords = [
     [50, 57, 62, 66, 69], [47, 54, 62, 66, 71], [43, 55, 62, 67, 71], [45, 57, 61, 64, 69],
     [40, 55, 59, 64, 67], [43, 55, 59, 62, 67], [42, 57, 62, 66, 69], [45, 57, 61, 64, 71],
 ]
-SEG = 10.0
+if preset == 'adviento':
+    # Re menor, más recogido: Dm, Bb, F, C, Gm, Bb, Dm, A(sus4→A)
+    chords = [
+        [50, 57, 62, 65, 69], [46, 53, 62, 65, 70], [41, 53, 60, 65, 69], [48, 55, 60, 64, 67],
+        [43, 55, 62, 67, 70], [46, 53, 62, 65, 69], [50, 57, 62, 65, 72], [45, 57, 62, 64, 69],
+    ]
+SEG = 10.0 if preset != 'adviento' else 12.0
 pad = np.zeros((2, n))
 for k in range(int(dur // SEG) + 2):
     chord = chords[k % len(chords)]
@@ -43,7 +50,7 @@ for k in range(int(dur // SEG) + 2):
 
 # Campanas: pentatónica de Re, notas dispersas
 bells = np.zeros((2, n))
-penta = [74, 76, 78, 81, 83, 86, 88, 90]
+penta = [74, 76, 78, 81, 83, 86, 88, 90] if preset != 'adviento' else [74, 77, 79, 81, 84, 86, 89]
 tb = 4.0
 while tb < dur - 4:
     m = penta[rng.integers(len(penta))]

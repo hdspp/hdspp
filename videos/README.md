@@ -43,3 +43,14 @@ npm install
 npm run studio   # vista previa
 npm run render   # genera out/tema-01-en-el-principio.mp4
 ```
+
+## I Domingo de Adviento (B) · «Velad» — vertical
+
+Composición `AdvientoB01` (1080×1920, para celular, ~2 min 30 s), basada en el
+«Comentario e interpretación» de la ficha. Guion en `src/advientoB01/narracion.json`.
+
+```bash
+python3 scripts/narracion.py ruta/a/es_MX-claude-high.onnx advientoB01
+python3 scripts/musica.py 200 public/advientoB01/musica.mp3 adviento
+npx remotion render src/index.ts AdvientoB01 out/adviento-b-01-velad-vertical.mp4
+```

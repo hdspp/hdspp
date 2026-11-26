@@ -22,6 +22,7 @@ export const SceneFade: React.FC<{children: React.ReactNode; fadeIn?: number; fa
 /** Night sky gradient, with optional warmth (0 = night, 1 = dawn). */
 export const Sky: React.FC<{warmth?: number; stars?: boolean}> = ({warmth = 0, stars = true}) => {
   const frame = useCurrentFrame();
+  const {width, height} = useVideoConfig();
   const top = mix(colors.night, '#1b1530', warmth);
   const mid = mix(colors.deep, '#5a3a55', warmth);
   const bottom = mix('#1a2147', '#c98a5a', warmth);
@@ -29,8 +30,8 @@ export const Sky: React.FC<{warmth?: number; stars?: boolean}> = ({warmth = 0, s
     <AbsoluteFill style={{background: `linear-gradient(180deg, ${top} 0%, ${mid} 60%, ${bottom} 130%)`}}>
       {stars &&
         new Array(90).fill(0).map((_, i) => {
-          const x = random(`x${i}`) * 1920;
-          const y = random(`y${i}`) * 1080;
+          const x = random(`x${i}`) * width;
+          const y = random(`y${i}`) * height;
           const s = 1 + random(`s${i}`) * 2.2;
           const tw = 0.35 + 0.65 * Math.abs(Math.sin(frame / (25 + random(`t${i}`) * 40) + i));
           return (
@@ -128,11 +129,14 @@ export const GoldRule: React.FC<{delay?: number; width?: number}> = ({delay = 0,
 };
 
 /** Small persistent footer with the topic label. */
-export const Footer: React.FC = () => (
+export const Footer: React.FC<{text?: string; bottom?: number}> = ({
+  text = 'Historia de la Salvación · Tema 1 · «En el principio»',
+  bottom = 44,
+}) => (
   <div
     style={{
       position: 'absolute',
-      bottom: 44,
+      bottom,
       left: 0,
       right: 0,
       textAlign: 'center',
@@ -143,7 +147,7 @@ export const Footer: React.FC = () => (
       textTransform: 'uppercase',
     }}
   >
-    Historia de la Salvación · Tema 1 · «En el principio»
+    {text}
   </div>
 );
 
