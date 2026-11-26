@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Apertura y cierre · Temas católicos para pequeños</title>
+<!--
+  Escena de apertura/cierre. Se controla por la URL:
+    escena.html?tipo=apertura|cierre&w=1920&h=1080
+  y se dibuja fotograma a fotograma con window.render(t) (t en segundos).
+  Los tiempos de las notas vienen de build/tiempos.json (jingle.py).
+-->
+<style>
+  @font-face { font-family: "Cormorant Garamond"; font-weight: 600; src: url(fonts/cormorant-garamond-latin-600-normal.woff2); }
+  @font-face { font-family: "Cormorant Garamond"; font-weight: 600; font-style: italic; src: url(fonts/cormorant-garamond-latin-600-italic.woff2); }
+  @font-face { font-family: "Cormorant Garamond"; font-weight: 700; src: url(fonts/cormorant-garamond-latin-700-normal.woff2); }
+  @font-face { font-family: "EB Garamond"; font-weight: 500; src: url(fonts/eb-garamond-latin-500-normal.woff2); }
+
+  :root {
+    --rojo: #681b11;
+    --rojo-claro: #8f2c1b;
+    --rojo-oscuro: #3e0e07;
+    --oro: #b78934;
+    --oro-claro: #e3bf6e;
+    --crema: #f3e6d3;
+  }
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage {
+    position: relative; overflow: hidden;
+    width: var(--w); height: var(--h);
+    background: radial-gradient(ellipse 75% 70% at 50% 42%, var(--rojo-claro) 0%, var(--rojo) 45%, var(--rojo-oscuro) 100%);
+    font-family: "Cormorant Garamond", Georgia, serif;
+  }
+  .abs { position: absolute; }
+  #rays {
+    left: 50%; top: 0; width: calc(var(--u) * 2600); height: calc(var(--u) * 2600);
+    margin-left: calc(var(--u) * -1300);
+    background: repeating-conic-gradient(from 0deg, rgba(227,191,110,.20) 0deg 5deg, rgba(227,191,110,0) 5deg 15deg);
+    -webkit-mask: radial-gradient(circle, #000 0%, rgba(0,0,0,.6) 22%, transparent 48%);
+            mask: radial-gradient(circle, #000 0%, rgba(0,0,0,.6) 22%, transparent 48%);
+    opacity: 0;
+  }
+  #halo {
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(243,214,150,.55) 0%, rgba(227,191,110,.18) 35%, transparent 68%);
+    opacity: 0;
+  }
+  #logo { transform-origin: 50% 60%; }
+  #logo img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .flare {
+    width: calc(var(--u) * 260); height: calc(var(--u) * 260);
+    margin: calc(var(--u) * -130) 0 0 calc(var(--u) * -130);
+    opacity: 0;
+  }
+  .flare::before, .flare::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle, #fff8e6 0%, rgba(255,236,190,.9) 6%, rgba(227,191,110,.35) 18%, transparent 42%),
+      linear-gradient(90deg, transparent 0%, rgba(255,240,200,.85) 50%, transparent 100%) center / 100% 3% no-repeat,
+      linear-gradient(0deg, transparent 0%, rgba(255,240,200,.85) 50%, transparent 100%) center / 3% 100% no-repeat;
+  }
+  .flare::after { transform: rotate(45deg) scale(.55); opacity: .7; }
+  .dust { border-radius: 50%; background: radial-gradient(circle, #ffe9b0 0%, rgba(227,191,110,.6) 35%, transparent 70%); }
+
+  #texto { left: 0; right: 0; text-align: center; }
+  #titulo {
+    color: var(--crema); font-weight: 600; line-height: 1.02; letter-spacing: .005em;
+    text-shadow: 0 calc(var(--u) * 3) calc(var(--u) * 14) rgba(30,5,0,.45);
+    margin: 0 auto;
+  }
+  #titulo span { display: inline-block; white-space: pre; }
+  #lema {
+    color: var(--crema); font-style: italic; font-weight: 600; opacity: 0;
+  }
+  #firma {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--oro-claro); font-family: "EB Garamond", Georgia, serif; font-weight: 500;
+    text-transform: uppercase; letter-spacing: .22em;
+  }
+  #firma .regla { height: calc(var(--u) * 2); background: linear-gradient(90deg, transparent, var(--oro-claro)); flex: none; }
+  #firma .regla.der { background: linear-gradient(90deg, var(--oro-claro), transparent); }
+  #firma .txt { padding: 0 .9em; white-space: nowrap; }
+  #negro { inset: 0; background: #000; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="rays" class="abs"></div>
+  <div id="halo" class="abs"></div>
+  <div id="dustLayer" class="abs" style="inset:0"></div>
+  <div id="logo" class="abs">
+    <img id="iglesia" src="assets/iglesia.png" alt="">
+    <img id="familia" src="assets/familia.png" alt="">
+    <img id="libro" src="assets/libro.png" alt="">
+  </div>
+  <div id="flareCruz" class="abs flare"></div>
+  <div id="texto" class="abs">
+    <h1 id="titulo"></h1>
+    <div id="lema">¡Hasta el próximo tema!</div>
+    <div id="firma"><span class="regla izq"></span><span class="txt">Historia de la Salvación para Pequeños</span><span class="regla der"></span></div>
+  </div>
+  <div id="negro" class="abs"></div>
+</div>
+
+<script>
+const q = new URLSearchParams(location.search);
+const TIPO = q.get("tipo") || "apertura";
+const W = +q.get("w") || 1920, H = +q.get("h") || 1080;
+const VERT = H > W;
+const U = Math.min(W, H) / 1080;            // unidad: 1 px de un lienzo 1080
+const NOTAS = [0.45, 0.75, 1.05, 1.65, 1.95, 2.25];   // build/tiempos.json
+const DUR = 6.0;
+
+const $ = id => document.getElementById(id);
+const st = $("stage").style;
+st.setProperty("--w", W + "px"); st.setProperty("--h", H + "px"); st.setProperty("--u", U + "px");
+
+// ---------- maquetación ----------
+const L = VERT
+  ? { logo: 860 * U, logoTop: 360 * U, textTop: 1310 * U, title: 132 * U, lema: 70 * U, firma: 30 * U, gap: 46 * U, maxw: 0.9 * W }
+  : { logo: 660 * U, logoTop: 105 * U, textTop: 735 * U,  title: 108 * U, lema: 58 * U, firma: 27 * U, gap: 34 * U, maxw: 0.9 * W };
+if (TIPO === "cierre" && !VERT) { L.logo = 600 * U; L.logoTop = 70 * U; L.textTop = 640 * U; }
+if (TIPO === "cierre" && VERT) { L.logoTop = 300 * U; L.textTop = 1230 * U; }
+
+const logo = $("logo");
+Object.assign(logo.style, { width: L.logo + "px", height: L.logo + "px", left: (W - L.logo) / 2 + "px", top: L.logoTop + "px" });
+const cx = W / 2, cy = L.logoTop + L.logo * 0.55;
+Object.assign($("halo").style, { width: L.logo * 1.6 + "px", height: L.logo * 1.6 + "px", left: cx - L.logo * 0.8 + "px", top: cy - L.logo * 0.8 + "px" });
+$("rays").style.top = cy - 1300 * U + "px";
+// cruz: centro aprox. en (0.5, 0.115) del cuadrado del logo
+Object.assign($("flareCruz").style, { left: cx + "px", top: L.logoTop + L.logo * 0.118 + "px" });
+
+const texto = $("texto");
+texto.style.top = L.textTop + "px";
+const titulo = $("titulo");
+titulo.style.fontSize = L.title + "px";
+titulo.style.maxWidth = L.maxw + "px";
+const frase = VERT ? ["Temas católicos", "para pequeños"] : ["Temas católicos para pequeños"];
+const letras = [];
+frase.forEach((linea, i) => {
+  if (i) titulo.appendChild(document.createElement("br"));
+  for (const ch of linea) { const s = document.createElement("span"); s.textContent = ch; titulo.appendChild(s); letras.push(s); }
+});
+const lema = $("lema");
+lema.style.fontSize = L.lema + "px";
+lema.style.marginTop = L.gap * 0.55 + "px";
+lema.style.display = TIPO === "cierre" ? "block" : "none";
+const firma = $("firma");
+firma.style.fontSize = L.firma + "px";
+firma.style.marginTop = (TIPO === "cierre" ? L.gap * 0.7 : L.gap) + "px";
+if (VERT) { firma.querySelector(".txt").innerHTML = "Historia de la Salvación<br>para Pequeños"; firma.querySelector(".txt").style.lineHeight = "1.5"; }
+const reglas = firma.querySelectorAll(".regla");
+
+// ---------- polvo dorado ----------
+function rnd(i) { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+const dust = [];
+for (let i = 0; i < 70; i++) {
+  const d = document.createElement("div"); d.className = "abs dust";
+  const s = (6 + rnd(i + 1) * 16) * U;
+  Object.assign(d.style, { width: s + "px", height: s + "px" });
+  $("dustLayer").appendChild(d);
+  dust.push({ el: d, x: rnd(i + 2) * W, y: rnd(i + 3) * H, v: (18 + rnd(i + 4) * 40) * U, ph: rnd(i + 5) * 6.28, f: 1.5 + rnd(i + 6) * 2.5, s });
+}
+
+// ---------- utilidades de tiempo ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const p = (t, t0, d) => clamp((t - t0) / d);
+const outCubic = x => 1 - Math.pow(1 - x, 3);
+const inOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const outBack = x => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const N = NOTAS;
+
+function flare(el, t, t0, scale = 1) {
+  const k = p(t, t0 - 0.05, 0.9);
+  const a = k < 0.12 ? k / 0.12 : 1 - (k - 0.12) / 0.88;
+  el.style.opacity = clamp(a) * (k > 0 && k < 1 ? 1 : 0);
+  el.style.transform = `scale(${(0.3 + 0.9 * outCubic(k)) * scale}) rotate(${k * 40}deg)`;
+}
+
+// ---------- fotograma ----------
+window.render = function (t) {
+  const ap = TIPO === "apertura";
+
+  // fondo y fundidos
+  const fadeIn = ap ? p(t, 0, 0.35) : p(t, 0, 0.3);
+  const fadeOut = p(t, ap ? 5.35 : 5.15, ap ? 0.65 : 0.85);
+  $("negro").style.opacity = Math.max(1 - fadeIn, inOut(fadeOut));
+
+  // polvo dorado que sube y titila
+  const dustOn = ap ? outCubic(p(t, 0.1, 1.2)) : 1;
+  for (const d of dust) {
+    const y = ((d.y - t * d.v) % H + H) % H;
+    const x = d.x + Math.sin(t * 0.7 + d.ph) * 14 * U;
+    const tw = 0.35 + 0.65 * Math.pow(0.5 + 0.5 * Math.sin(t * d.f + d.ph), 2);
+    d.el.style.transform = `translate(${x}px, ${y}px)`;
+    d.el.style.opacity = tw * 0.55 * dustOn;
+  }
+
+  // logo por capas
+  const libro = $("libro").style, iglesia = $("iglesia").style, familia = $("familia").style;
+  if (ap) {
+    const kb = p(t, N[0] - 0.02, 0.5);
+    libro.opacity = clamp(kb * 3);
+    libro.transformOrigin = "50% 84%";
+    libro.transform = `scale(${0.08 + 0.92 * outBack(kb)}, ${0.55 + 0.45 * outCubic(kb)})`;
+
+    const ki = outCubic(p(t, N[1] - 0.02, 0.6));
+    iglesia.opacity = clamp(ki * 2.5);
+    iglesia.clipPath = `inset(${(1 - ki) * 75}% 0 0 0)`;
+    iglesia.transform = `translateY(${(1 - ki) * 12}%)`;
+
+    const kf = outCubic(p(t, N[2] - 0.02, 0.6));
+    familia.opacity = clamp(kf * 2);
+    familia.clipPath = `inset(0 ${(1 - kf) * 50}% 0 ${(1 - kf) * 50}%)`;
+    familia.transform = `translateY(${(1 - kf) * 4}%)`;
+  } else {
+    const k = outCubic(p(t, N[0] - 0.05, 0.7));
+    for (const s of [libro, iglesia, familia]) { s.opacity = k; s.transform = "none"; s.clipPath = "none"; }
+  }
+  // respiración y pulso con el acorde final
+  const pulse = Math.exp(-Math.pow((t - N[5] - 0.12) / 0.22, 2));
+  const enter = ap ? 1 : 0.9 + 0.1 * outCubic(p(t, N[0] - 0.05, 0.8));
+  logo.style.transform = `scale(${enter * (1 + 0.025 * pulse + 0.008 * Math.sin(t * 1.6))})`;
+
+  // destello en la cruz
+  flare($("flareCruz"), t, ap ? N[3] : N[5], ap ? 1 : 1.15);
+
+  // halo y rayos
+  const kh = ap ? outCubic(p(t, N[5] - 0.1, 0.9)) : outCubic(p(t, N[0], 1.0));
+  $("halo").style.opacity = 0.25 + 0.6 * kh * (0.85 + 0.15 * Math.sin(t * 2));
+  if (!ap && t < N[0]) $("halo").style.opacity = 0.25 * fadeIn;
+  if (ap && t < N[0]) $("halo").style.opacity = 0.25 * outCubic(p(t, 0, 0.45));
+  const kr = ap ? outCubic(p(t, N[5] - 0.05, 0.8)) : outCubic(p(t, N[5] - 0.05, 0.8));
+  $("rays").style.opacity = 0.75 * kr * (1 - 0.35 * p(t, N[5] + 0.8, 1.5));
+  $("rays").style.transform = `rotate(${t * 4}deg)`;
+
+  // título letra a letra
+  const t0 = ap ? N[5] - 0.06 : N[1];
+  const span = ap ? 0.75 : 0.6;
+  letras.forEach((s, i) => {
+    const k = outCubic(p(t, t0 + (i / letras.length) * span, 0.45));
+    s.style.opacity = k;
+    s.style.transform = `translateY(${(1 - k) * 0.35}em)`;
+    s.style.filter = k < 1 ? `blur(${(1 - k) * 6 * U}px)` : "none";
+  });
+
+  // lema (cierre)
+  if (!ap) {
+    const kl = outCubic(p(t, N[3], 0.6));
+    lema.style.opacity = kl;
+    lema.style.transform = `translateY(${(1 - kl) * 0.4}em)`;
+  }
+
+  // firma con reglas que crecen desde el centro
+  const kf2 = outCubic(p(t, ap ? N[5] + 0.45 : N[4] + 0.1, 0.8));
+  firma.style.opacity = kf2;
+  firma.querySelector(".txt").style.letterSpacing = (0.22 + (1 - kf2) * 0.25) + "em";
+  reglas.forEach(r => r.style.width = (VERT ? 70 : 120) * U * kf2 + "px");
+};
+
+window.ready = document.fonts.ready.then(() => Promise.all([...document.images].map(i => i.decode()))).then(() => { window.render(0); return true; });
+</script>
+</body>
+</html>
