@@ -27,7 +27,9 @@ Vídeo vertical de 1080×1920, de unos 2 min 34 s, hecho con [HyperFrames](https
    python3 gen_voz.py      # voz con Kokoro (npx hyperframes tts); solo rehace las frases que cambian
    python3 construir.py    # genera index.html desde plantilla.html.tpl y la línea de tiempo
    npx hyperframes check   # validación (zonas seguras, contraste, solapes…)
-   npx hyperframes render -q delivery -o salida/tema01_adviento1_9x16.mp4
+   npx hyperframes render -q delivery -o salida/render.mp4
+   # volumen estándar de redes (−14 LUFS):
+   ffmpeg -i salida/render.mp4 -c:v copy -af loudnorm=I=-14:TP=-1.5 -c:a aac -b:a 192k salida/tema01_adviento1_9x16.mp4
    ```
 
 - El diseño y las animaciones están en `plantilla.html.tpl`, con CSS y GSAP. Las animaciones se sincronizan con la voz a partir de las duraciones reales de cada frase.
